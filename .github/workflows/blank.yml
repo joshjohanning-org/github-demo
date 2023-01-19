@@ -27,4 +27,4 @@ jobs:
           # parse results
           # if % reaches threshold, then pass (exit 0)
           # if too many tests fail, then fail (exit 1)
-          exit 0
+          exit 1
