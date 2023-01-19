@@ -1,40 +1,35 @@
-# This is a basic workflow to help you get started with Actions
+name: Tests Demo
 
-name: CI
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   pull_request:
     branches: [ "main" ]
-    types: [ labeled ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+  unit-tests:
+    runs-on: ubuntu-latest
+    needs: [ high-level-tests ]
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - run: echo "hello world"
+    
+  high-level-tests:
+    runs-on: ubuntu-latest
+    needs: [ unit-tests ]
+
+    steps:
       - uses: actions/checkout@v3
 
-
-      # Runs a set of commands using the runners shell
       - name: Run the tests
-        if: (!contains(github.event.issue.labels.*.name, 'skip-tests'))
         run: |
           # run the integration test
           # parse results
           # if % reaches threshold, then pass (exit 0)
           # if too many tests fail, then fail (exit 1)
-          exit 1
+          exit 0
 
-      - uses: marocchino/sticky-pull-request-comment@v2
-        if: (!contains(github.event.issue.labels.*.name, 'skip-tests'))
-        with:
-          header: release
-          message: |
-            Note - the tests have been skipped!
+  deeper-level-tests:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    needs: [ high-level-tests ]
+    steps:
+      - run: echo "hello world"
