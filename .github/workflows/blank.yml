@@ -32,3 +32,10 @@ jobs:
           # if % reaches threshold, then pass (exit 0)
           # if too many tests fail, then fail (exit 1)
           exit 1
+
+      - uses: marocchino/sticky-pull-request-comment@v2
+        if: (!contains(github.event.issue.labels.*.name, 'skip-tests'))
+        with:
+          header: release
+          message: |
+            Note - the tests have been skipped!
